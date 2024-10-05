@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrreyVoyager</title>
+    <title>OrreryVoyager 3D</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>OrreyVoyager: 3D Solar System</h1>
+    <h1>OrreryVoyager: 3D Solar System</h1>
     <div id="container">
-        <canvas id="solarCanvas"></canvas>
+        <div id="canvasContainer"></div>
         <div id="controls">
             <button id="playButton">Play</button>
             <button id="forwardButton">Forward</button>
             <button id="backwardButton">Backward</button>
-            <input type="range" id="speedSlider" min="-10" max="10" value="0">
+            <input type="range" id="speedSlider" min="0" max="3" step="0.1" value="1">
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> <!-- Include Three.js -->
     <script src="script.js"></script>
 </body>
 </html>

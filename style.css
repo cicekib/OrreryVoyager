@@ -21,9 +21,10 @@ body {
     align-items: center;
 }
 
-canvas {
+#canvasContainer {
+    width: 800px;
+    height: 600px;
     border: 2px solid white;
-    background-color: #000;
 }
 
 #controls {
