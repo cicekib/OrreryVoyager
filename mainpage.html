@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OrreryVoyager3D</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
     <style>
         /* CSS for the modal */
         .modal {
@@ -16,40 +16,68 @@
             top: 0;
             width: 100%; /* Full width */
             height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            overflow: hidden; /* Prevent scrollbars */
+            background-color: rgba(0,0,0,0.7); /* Black with opacity */
+            justify-content: center; /* Center content */
+            align-items: center; /* Center content vertically */
         }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            max-width: 600px; /* Maximum width */
-            color: black;
-            border-radius: 5px; /* Rounded corners */
+            position: relative; /* For positioning elements inside */
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            padding: 0; /* No padding */
+            border: none; /* No border */
+            background-color: transparent; /* Transparent background */
         }
 
         .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+            position: absolute; /* Position relative to modal */
+            top: 10px; /* Space from top */
+            right: 15px; /* Space from right */
+            color: white; /* Close button color */
+            font-size: 28px; /* Close button size */
+            font-weight: bold; /* Make it bold */
+            cursor: pointer; /* Pointer cursor */
         }
 
         .close:hover,
         .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+            color: #ffae42; /* Change color on hover */
+        }
+
+        .modal-content img {
+            width: 100%; /* Full width of the modal */
+            height: 100%; /* Full height of the modal */
+            object-fit: contain; /* Maintain aspect ratio */
+        }
+
+        /* Button Styles */
+        #controls button {
+            background-color: black; /* Black background */
+            border: 2px solid white; /* White border */
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor */
+            font-size: 24px; /* Increase icon size */
+            margin: 5px; /* Space between buttons */
+            color: white; /* White text/icon color */
+            padding: 10px; /* Padding for better click area */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        #controls button:hover {
+            background-color: white; /* Change to white on hover */
+            color: black; /* Change icon color to black on hover */
+        }
+
+        #controls input[type="range"] {
+            margin: 0 10px; /* Margin for the slider */
         }
     </style>
 </head>
 <body>
     <header id="header">
-        <h1>Orrery Voyager</h1>    
+        <h1>ORRERY VOYAGER</h1>    
     </header>
 
     <section id="logocontainer">
@@ -77,7 +105,7 @@
                             <a class="nav-link" href="#" onclick="showInfo('moon')">Moon</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="showInfo('jupiter')">Jupiter</a>
+                            <a class="nav-link" href="#" onclick="showInfo('mars')">Mars</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" onclick="showInfo('sun')">Sun</a>
@@ -91,9 +119,9 @@
     <div id="container">
         <div id="canvasContainer"></div>
         <div id="controls">
-            <button id="playButton" aria-label="Play or Pause">Play</button>
-            <button id="forwardButton" aria-label="Move Forward">Forward</button>
-            <button id="backwardButton" aria-label="Move Backward">Backward</button>
+            <button id="backwardButton" aria-label="Move Backward"><i class="fas fa-backward"></i></button>
+            <button id="playButton" aria-label="Play or Pause"><i class="fas fa-play"></i></button>
+            <button id="forwardButton" aria-label="Move Forward"><i class="fas fa-forward"></i></button>
             <input type="range" id="speedSlider" min="0" max="3" step="0.1" value="1">
         </div>
         <div id="timeline">
@@ -111,59 +139,44 @@
         <p>© Copyright 2024 Orrery Voyager</p>
     </footer>
 
-    <!-- Modal for displaying information -->
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeInfo()">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalBody"></p>
-        </div>
+<!-- Modal for displaying image only -->
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeInfo()">&times;</span>
+        <img id="modalImage" src="" alt="Celestial Image">
     </div>
+</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> <!-- Include Three.js -->
     <script src="script.js" defer></script> <!-- Added defer for better performance -->
     <script>
-        // Function to show information modal
-        function showInfo(celestialBody) {
-            const modal = document.getElementById('infoModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalBody = document.getElementById('modalBody');
+    function showInfo(celestialBody) {
+        const modal = document.getElementById('infoModal');
+        const modalImage = document.getElementById('modalImage');
 
-            switch (celestialBody) {
-                case 'earth':
-                    modalTitle.innerText = "Earth";
-                    modalBody.innerText = "Earth is the third planet from the Sun and the only astronomical object known to harbor life.";
-                    break;
-                case 'moon':
-                    modalTitle.innerText = "Moon";
-                    modalBody.innerText = "The Moon is Earth's only natural satellite and the fifth largest moon in the Solar System.";
-                    break;
-                case 'jupiter':
-                    modalTitle.innerText = "Jupiter";
-                    modalBody.innerText = "Jupiter is the largest planet in our Solar System and is known for its Great Red Spot.";
-                    break;
-                case 'sun':
-                    modalTitle.innerText = "Sun";
-                    modalBody.innerText = "The Sun is the star at the center of our Solar System and is vital for life on Earth.";
-                    break;
-            }
-
-            modal.style.display = "block"; // Show the modal
+        // Set the correct image based on the celestial body
+        switch (celestialBody) {
+            case 'earth':
+                modalImage.src = "../sitepics/earthpopup.png"; // Replace with actual image path
+                break;
+            case 'moon':
+                modalImage.src = "../sitepics/moonpopup.png"; // Replace with actual image path
+                break;
+            case 'mars':
+                modalImage.src = "../sitepics/marspopup.png"; // Replace with actual image path
+                break;
+            case 'sun':
+                modalImage.src = "../sitepics/sunpopup.png"; // Replace with actual image path
+                break;
         }
 
-        // Function to close the modal
-        function closeInfo() {
-            const modal = document.getElementById('infoModal');
-            modal.style.display = "none"; // Hide the modal
-        }
+        modal.style.display = "flex"; // Show the modal
+    }
 
-        // Close the modal when clicking outside of the modal content
-        window.onclick = function(event) {
-            const modal = document.getElementById('infoModal');
-            if (event.target === modal) {
-                closeInfo();
-            }
-        }
+    function closeInfo() {
+        const modal = document.getElementById('infoModal');
+        modal.style.display = "none"; // Hide the modal
+    }
     </script>
 </body>
 </html>
