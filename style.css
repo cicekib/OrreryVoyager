@@ -30,8 +30,8 @@ body {
 }
 
 #logo img {
-    width: 100px;
-    height: auto;
+    width: 100px; /* Width of the logo */
+    height: auto; /* Maintain aspect ratio */
 }
 
 #title h2 {
@@ -171,10 +171,6 @@ footer p {
     font-size: 0.9rem;
 }
 
-
-
-
-
 /* General modal styles */
 .modal {
     display: none; /* Hidden by default */
@@ -184,11 +180,11 @@ footer p {
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
+    overflow: hidden; /* Prevent scrollbars */
     background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
-    justify-content: center;
-    align-items: center;
-    display: flex;
+    justify-content: center; /* Center modal content */
+    align-items: center; /* Center modal content vertically */
+    display: flex; /* Use flexbox for centering */
 }
 
 /* Modal content styles */
@@ -198,26 +194,25 @@ footer p {
     max-width: 90vw; /* Maximum width of the modal */
     max-height: 90vh; /* Maximum height of the modal */
     position: relative; /* For close button positioning */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center image horizontally */
+    align-items: center; /* Center image vertically */
 }
 
 /* Close button styles */
 .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+    position: absolute; /* Position the close button absolutely */
+    top: 10px; /* Space from top */
+    right: 15px; /* Space from right */
+    color: white; /* Close button color */
+    font-size: 28px; /* Close button size */
+    font-weight: bold; /* Make it bold */
+    cursor: pointer; /* Pointer cursor */
 }
 
 .close:hover,
 .close:focus {
-    color: black;
-    text-decoration: none;
+    color: #ffae42; /* Change color on hover */
 }
 
 /* Image styles to fit the modal */
@@ -228,4 +223,3 @@ footer p {
     max-height: 90vh; /* Ensure it doesn’t exceed 90% of the viewport height */
     object-fit: contain; /* Ensure the image maintains aspect ratio and fits within the modal */
 }
-
