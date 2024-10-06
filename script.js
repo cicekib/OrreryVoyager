@@ -9,13 +9,13 @@ function init() {
     scene = new THREE.Scene();
 
     // Set up a perspective camera
-    camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 2000);
+    camera = new THREE.PerspectiveCamera(75, 1000 / 600, 0.5, 5000);
     camera.position.set(0, 200, 400); // Adjusted camera position to capture both Earth and Jupiter
     camera.lookAt(0, 0, 0);
 
     // Create the WebGL renderer
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize(800, 600);
+    renderer.setSize(940, 540);
     document.getElementById('canvasContainer').appendChild(renderer.domElement);
 
     // Create Sun with Linear Gradient
@@ -87,11 +87,11 @@ function init() {
 
     // Create Jupiter Orbit Group
     jupiterOrbit = new THREE.Group();
-    jupiterOrbit.position.set(0, 0, 175); // Initial position for Jupiter (twice Earth's radius, along Z-axis)
+    jupiterOrbit.position.set(0, 0, 150); // Initial position for Jupiter (twice Earth's radius, along Z-axis)
     jupiterOrbit.add(jupiter); // Add Jupiter to its orbit group
 
     // Rotate Jupiter's orbit so it moves in the XZ plane (perpendicular to Earth's orbit)
-    jupiterOrbit.rotation.x = Math.PI / 2;
+    jupiterOrbit.rotation.z = Math.PI / 2;
 
     // Add Jupiter orbit to the scene (Jupiter orbits the Sun)
     scene.add(jupiterOrbit);
@@ -116,8 +116,8 @@ function animate() {
     // Rotate Earth and Moon if play is enabled
     if (play) {
         systemOrbit.rotation.y += speed; // Earth-Moon system orbits around the Sun (horizontal orbit)
-        earthOrbit.rotation.y += speed * 1.5; // Moon orbits around the Earth
-        jupiterOrbit.rotation.z += speed * 0.5; // Jupiter orbits the Sun in the XZ plane (vertical orbit)
+        earthOrbit.rotation.z += speed * 6; // Moon orbits around the Earth
+        jupiterOrbit.rotation.y += speed * 3; // Jupiter orbits the Sun in the XZ plane (vertical orbit)
     }
 
     // Move the Sun along with the planets horizontally based on speed
@@ -166,3 +166,23 @@ document.getElementById('speedSlider').addEventListener('input', (event) => {
 
 // Initialize the 3D scene
 init();
+
+// Assuming you have a reference to the canvasContainer
+const canvasContainer = document.getElementById('canvasContainer');
+const canvas = document.createElement('canvas');
+canvasContainer.appendChild(canvas);
+
+
+// Resize the canvas to fill the container
+function resizeCanvas() {
+    const canvasContainer = document.getElementById('canvasContainer');
+    renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+    camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight; // Update camera aspect ratio
+    camera.updateProjectionMatrix(); // Update the projection matrix
+}
+
+// Initial resize
+resizeCanvas();
+
+// Resize on window resize
+window.addEventListener('resize', resizeCanvas);

@@ -1,118 +1,59 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | Voyager Orrey</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+<div style={{width: 1280, height: 832, position: 'relative', background: '#040A13'}}>
+    <div style={{height: 30, left: 241, top: 92, position: 'absolute', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', display: 'inline-flex'}}>
+      <div style={{textAlign: 'center', color: '#F4EEF5', fontSize: 24, fontFamily: 'Atkinson Hyperlegible', fontWeight: '400', wordWrap: 'break-word'}}>Filters</div>
+    </div>
+    <div style={{left: 241, top: 122, position: 'absolute', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 20, display: 'inline-flex'}}>
+      <div style={{width: 115, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', display: 'inline-flex'}}>
+        <div style={{alignSelf: 'stretch', padding: 10, justifyContent: 'flex-start', alignItems: 'center', gap: 10, display: 'inline-flex'}}>
+          <div style={{width: 24, height: 24, position: 'relative'}}>
+            <div style={{width: 18, height: 18, left: 3, top: 3, position: 'absolute', background: '#F4EEF5'}}></div>
+          </div>
+          <div style={{color: 'white', fontSize: 16, fontFamily: 'Atkinson Hyperlegible', fontWeight: '400', wordWrap: 'break-word'}}>Earth</div>
+        </div>
+        <div style={{alignSelf: 'stretch', padding: 10, justifyContent: 'flex-start', alignItems: 'center', gap: 10, display: 'inline-flex'}}>
+          <div style={{width: 24, height: 24, position: 'relative'}}>
+            <div style={{width: 18, height: 18, left: 3, top: 3, position: 'absolute', background: '#F4EEF5'}}></div>
+          </div>
+          <div style={{color: 'white', fontSize: 16, fontFamily: 'Atkinson Hyperlegible', fontWeight: '400', wordWrap: 'break-word'}}>Moon</div>
         </div>
       </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-logo-title-footer"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Voyager Orrey</div>
+      <div style={{height: 44, padding: 10, justifyContent: 'flex-start', alignItems: 'center', gap: 10, display: 'flex'}}>
+        <div style={{width: 24, height: 24, position: 'relative'}}>
+          <div style={{width: 18, height: 18, left: 3, top: 3, position: 'absolute', background: '#F4EEF5'}}></div>
+        </div>
+        <div style={{color: 'white', fontSize: 16, fontFamily: 'Atkinson Hyperlegible', fontWeight: '400', wordWrap: 'break-word'}}>Mars</div>
       </div>
     </div>
-    <script>
-      var canvas = document.querySelector("#unity-canvas");
-
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        var warningBanner = document.querySelector("#unity-warning");
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
-
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Build.loader.js";
-      var config = {
-        arguments: [],
-        dataUrl: buildUrl + "/Build.data.unityweb",
-        frameworkUrl: buildUrl + "/Build.framework.js.unityweb",
-        codeUrl: buildUrl + "/Build.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Orrey Voyager",
-        productName: "Voyager Orrey",
-        productVersion: "0.1.0",
-        showBanner: unityShowBanner,
-      };
-
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        document.querySelector("#unity-container").className = "unity-mobile";
-        canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
-      }
-
-      document.querySelector("#unity-loading-bar").style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                document.querySelector("#unity-loading-bar").style.display = "none";
-                document.querySelector("#unity-fullscreen-button").onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
-
-    </script>
-  </body>
-</html>
+    <div style={{left: 28, top: 32, position: 'absolute', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 50, display: 'inline-flex'}}>
+      <img style={{width: 160, height: 160}} src="https://via.placeholder.com/160x160" />
+      <div style={{color: 'white', fontSize: 32, fontFamily: 'Dune Rise', fontWeight: '400', wordWrap: 'break-word'}}>An Orrery for our time!</div>
+    </div>
+    <div style={{height: 60, left: 89, top: 737, position: 'absolute', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-end', display: 'inline-flex'}}>
+      <div style={{alignSelf: 'stretch', height: 60, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 1, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: 20, display: 'inline-flex'}}>
+          <div style={{color: '#F4EEF5', fontSize: 20, fontFamily: 'Atkinson Hyperlegible', fontWeight: '400', wordWrap: 'break-word'}}>Timeline</div>
+          <div style={{width: 910.12, height: 0, border: '2px white solid'}}></div>
+        </div>
+        <div style={{width: 138, height: 34, justifyContent: 'center', alignItems: 'center', gap: 21, display: 'inline-flex'}}>
+          <div style={{width: 24, height: 24, position: 'relative', transform: 'rotate(180deg)', transformOrigin: '0 0', border: '1px #F4EEF5 solid'}}>
+            <div style={{width: 21.17, height: 12.59, left: 1.50, top: 5.71, position: 'absolute', background: '#F4EEF5'}}></div>
+          </div>
+          <div style={{width: 24, height: 24, position: 'relative', border: '1px #F4EEF5 solid'}}>
+            <div style={{width: 12, height: 14, left: 6, top: 5, position: 'absolute', background: '#F4EEF5'}}></div>
+          </div>
+          <div style={{width: 24, height: 24, position: 'relative', border: '1px #F4EEF5 solid'}}>
+            <div style={{width: 21.17, height: 12.59, left: 1.50, top: 5.71, position: 'absolute', background: '#F4EEF5'}}></div>
+          </div>
+        </div>
+        <div style={{height: 45, left: 681, top: 26, position: 'absolute', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 5, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'center', gap: 16, display: 'inline-flex'}}>
+            <div style={{color: '#F4EEF5', fontSize: 20, fontFamily: 'Atkinson Hyperlegible', fontWeight: '400', wordWrap: 'break-word'}}>Adjust Speed:</div>
+            <div style={{height: 25, justifyContent: 'flex-start', alignItems: 'center', gap: 4, display: 'flex'}}>
+              <div style={{width: 67, height: 25, border: '1px #F4EEF5 solid'}} />
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', color: 'white', fontSize: 12, fontFamily: 'Atkinson Hyperlegible', fontStyle: 'italic', fontWeight: '400', wordWrap: 'break-word'}}>(Input ex: ‘2x’, ‘-1.5x’, ‘5x’ etc)</div>
+        </div>
+      </div>
+    </div>
+  </div>
